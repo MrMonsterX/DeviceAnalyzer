@@ -1,2 +1,8 @@
 # Project exclude paths
-/.gradle/
+*.iml
+/.idea
+/.gradle
+/local.properties
+/build/
+.gradle/
+
