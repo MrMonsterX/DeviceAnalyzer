@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Device Analyzer</string>
+    <string name="x_axis">X Axis: </string>
+    <string name="y_axis">Y Axis: </string>
+    <string name="z_axis">Z Axis: </string>
+    <string name="value">Value: </string>
+    <string name="test">TEST</string>
+    <string name="none">-</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="todo">TODO</string>
+    <string name="inter_access">Connected, Internet Access</string>
+    <string name="no_inter_access">Connected, No Internet Access</string>
+    <string name="supported">Supported</string>
+    <string name="not_supported">Not Supported</string>
+    <string name="connectivity">Connectivity</string>
+    <string name="android">Android</string>
+    <string name="sensors">Sensors</string>
+    <string name="hardware">Hardware</string>
+    <string name="device">Device</string>
+    <string name="system">System</string>
+    <string name="battery">Battery</string>
+    <string name="network">Network</string>
+
+
+    <!--Sensors-->
+    <string name="accelerometer">Accelerometer</string>
+    <string name="proximity">Proximity</string>
+    <string name="gyroscope">Gyroscope</string>
+    <string name="light">Light</string>
+    <string name="magnetic">Magnetic</string>
+    <string name="gravity">Gravity</string>
+    <string name="pressure">Pressure (Barometer)</string>
+    <string name="temperature">Temperature</string>
+    <string name="orientation">Orientation</string>
+
+    <!--Sensor Units-->
+    <string name="rad_s">rad/s</string>
+    <string name="cm">cm</string>
+    <string name="ms">m/s</string>
+    <string name="lx">lx</string>
+    <string name="microT">μT</string>
+    <string name="ms2">m/s2</string>
+    <string name="hPa">hPa or mbar</string>
+    <string name="c">°C</string>
+    <string name="degrees">Degrees</string>
+    <string name="x_axis_ortn">Pitch (X)</string>
+    <string name="y_axis_ortn">Roll (Y)</string>
+    <string name="z_axis_ortn">Yaw (Z)</string>
+    <string name="rooted">Rooted</string>
+    <string name="non_rooted">Non-Rooted</string>
+    <string name="not_available">Not Available</string>
+    <string name="not_found">Not Found</string>
+    <string name="ready">Ready</string>
+    <string name="sim1">SIM 1</string>
+    <string name="sim2">SIM 2</string>
+    <string name="not_specified">Not Specified</string>
+    <string name="mediatek">Mediatek</string>
+    <string name="samsung_exynos">Samsung Exynos</string>
+    <string name="qualcomm_snapdragon">Qualcomm Snapdragon</string>
+    <string name="kirin">Kirin</string>
+    <string name="google_tensor">Google Tensor</string>
+
+
+</resources>
