@@ -1,6 +1,9 @@
 package com.madinaappstudio.deviceanalyzer.networks;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.LinkAddress;
 import android.net.LinkProperties;
@@ -14,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,10 +39,13 @@ public class WifiFragment extends Fragment {
     TextView netWifiHeadStatus, netWifiIpv4Address, netWifiIpv6Address, netWifiPublicIp, netWifiGateway,
             netWifiSubnetMask, netWifiLeaseDuration, netWifiInterface, netWifiLinkSpeed,
             netWifiFrequency, netWifiStandard, netWifi5GhzSupported, netWifi6GhzSupported,
-            netWifiDNS1, netWifiDNS2, netWifiDNS3, netWifiDNS4;
+            netWifiDNS1, netWifiDNS2, netWifiDNS3, netWifiDNS4, wifiPubIpAddress;
 
     LinearLayout netWifiLayoutDNS1, netWifiLayoutDNS2, netWifiLayoutDNS3, netWifiLayoutDNS4, netWifiLayoutPubIp;
     ImageView netWifiHeadIc;
+    Button wifiPubIpAddressOk;
+    ApiCalling apiCalling;
+    Dialog dialog;
 
     public WifiFragment() {}
 
@@ -79,6 +86,18 @@ public class WifiFragment extends Fragment {
 
         getWifiInfo();
 
+        apiCalling = new ApiCalling();
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_publicip);
+        wifiPubIpAddress = dialog.findViewById(R.id.pubIpAddress);
+        wifiPubIpAddressOk = dialog.findViewById(R.id.pubIpAddressOk);
+        wifiPubIpAddressOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
         return view;
     }
     private void getWifiInfo(){
@@ -99,6 +118,27 @@ public class WifiFragment extends Fragment {
                             netWifiHeadStatus.setText(R.string.inter_access);
                             netWifiHeadIc.setImageResource(R.drawable.ic_wifi_on_24px);
                             netWifiLayoutPubIp.setVisibility(View.VISIBLE);
+                            netWifiPublicIp.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    apiCalling.getPublicIpAddress(new ApiCalling.IpAddressListener() {
+                                        @Override
+                                        public void onSuccess(String ipAddress) {
+                                            wifiPubIpAddress.setText(ipAddress);
+                                            dialog.show();
+                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            wifiPubIpAddress.setText(R.string.unable_to_fetch);
+                                            dialog.show();
+                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                        }
+                                    });
+                                }
+                            });
+
                         }
                     });
                 } else {
@@ -241,7 +281,7 @@ public class WifiFragment extends Fragment {
     private boolean isInternetAvailable() {
         try {
             InetAddress address = InetAddress.getByName("dns.google.com");
-            return address.isReachable(1500);
+            return address.isReachable(1000);
         } catch (IOException e) {
             Log.e("TAG", "isInternetAvailable: Error checking internet connection", e);
             return false;

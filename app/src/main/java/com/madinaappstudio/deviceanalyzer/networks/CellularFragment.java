@@ -1,7 +1,9 @@
 package com.madinaappstudio.deviceanalyzer.networks;
 
-import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.LinkAddress;
 import android.net.LinkProperties;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,7 +25,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.madinaappstudio.deviceanalyzer.CrashReporter;
-import com.madinaappstudio.deviceanalyzer.MainActivity;
 import com.madinaappstudio.deviceanalyzer.R;
 
 import java.io.IOException;
@@ -36,10 +38,13 @@ import java.util.ArrayList;
 public class CellularFragment extends Fragment {
     Context context;
     TextView netCellHeadStatus, netCellName, netCellIpv4Address, netCellIpv6Address, netCellSignalStrength, netCellGateway,
-            netCellDNS1, netCellDNS2, netCellDNS3, netCellDNS4, netCellSubnetMask,
-            netCellInterface, netCellDeviceType, netCellSimTechnology;
-    LinearLayout netCellLayoutDNS1, netCellLayoutDNS2, netCellLayoutDNS3, netCellLayoutDNS4;
+            netCellDNS1, netCellDNS2, netCellDNS3, netCellDNS4, netCellSubnetMask, netCellPublicIp,
+            netCellInterface, netCellDeviceType, cellPubIpAddress;
+    LinearLayout netCellLayoutDNS1, netCellLayoutDNS2, netCellLayoutDNS3, netCellLayoutDNS4, netCellLayoutPubIp;
     ImageView netCellHeadIc;
+    Button cellPubIpAddressOk;
+    ApiCalling apiCalling;
+    Dialog dialog;
 
     public CellularFragment() {
     }
@@ -61,6 +66,7 @@ public class CellularFragment extends Fragment {
         netCellName = view.findViewById(R.id.netCellName);
         netCellIpv4Address = view.findViewById(R.id.netCellIpv4Address);
         netCellIpv6Address = view.findViewById(R.id.netCellIpv6Address);
+        netCellPublicIp = view.findViewById(R.id.netCellPublicIp);
         netCellSignalStrength = view.findViewById(R.id.netCellSignalStrength);
         netCellGateway = view.findViewById(R.id.netCellGateway);
         netCellSubnetMask = view.findViewById(R.id.netCellSubnetMask);
@@ -70,13 +76,26 @@ public class CellularFragment extends Fragment {
         netCellLayoutDNS2 = view.findViewById(R.id.netCellLayoutDNS2);
         netCellLayoutDNS3 = view.findViewById(R.id.netCellLayoutDNS3);
         netCellLayoutDNS4 = view.findViewById(R.id.netCellLayoutDNS4);
+        netCellLayoutPubIp = view.findViewById(R.id.netCellLayoutPubIp);
         netCellDNS1 = view.findViewById(R.id.netCellDNS1);
         netCellDNS2 = view.findViewById(R.id.netCellDNS2);
         netCellDNS3 = view.findViewById(R.id.netCellDNS3);
         netCellDNS4 = view.findViewById(R.id.netCellDNS4);
 
-
         getCellInfo();
+
+        apiCalling = new ApiCalling();
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_publicip);
+        cellPubIpAddress = dialog.findViewById(R.id.pubIpAddress);
+        cellPubIpAddressOk = dialog.findViewById(R.id.pubIpAddressOk);
+
+        cellPubIpAddressOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
         return view;
     }
@@ -98,6 +117,27 @@ public class CellularFragment extends Fragment {
                         public void run() {
                             netCellHeadStatus.setText(R.string.inter_access);
                             netCellHeadIc.setImageResource(R.drawable.ic_cellular_on_24px);
+                            netCellLayoutPubIp.setVisibility(View.VISIBLE);
+                            netCellPublicIp.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    apiCalling.getPublicIpAddress(new ApiCalling.IpAddressListener() {
+                                        @Override
+                                        public void onSuccess(String ipAddress) {
+                                            cellPubIpAddress.setText(ipAddress);
+                                            dialog.show();
+                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            cellPubIpAddress.setText(R.string.unable_to_fetch);
+                                            dialog.show();
+                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
                 } else {
@@ -106,6 +146,7 @@ public class CellularFragment extends Fragment {
                         public void run() {
                             netCellHeadStatus.setText(R.string.no_inter_access);
                             netCellHeadIc.setImageResource(R.drawable.ic_cellular_off_24px);
+                            netCellLayoutPubIp.setVisibility(View.GONE);
                         }
                     });
                 }
