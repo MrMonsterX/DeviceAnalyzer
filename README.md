@@ -6,7 +6,7 @@ The Device Analyzer is a powerful tool designed to provide detailed information 
 
 ## Screenshots
 
-![App Screenshot](https://github.com/MrMonsterX/DeviceAnalyzer/blob/master/docs/images/home.jpg) ![App Screenshot](https://github.com/MrMonsterX/DeviceAnalyzer/blob/master/docs/images/hardware.jpg) ![App Screenshot](https://github.com/MrMonsterX/DeviceAnalyzer/blob/master/docs/images/system.jpg)
+![App Screenshot](https://github.com/MrMonsterX/DeviceAnalyzer/blob/main/docs/images/home.jpg) ![App Screenshot](https://github.com/MrMonsterX/DeviceAnalyzer/blob/main/docs/images/hardware.jpg) ![App Screenshot](https://github.com/MrMonsterX/DeviceAnalyzer/blob/main/docs/images/system.jpg)
 
 
 ## Features
