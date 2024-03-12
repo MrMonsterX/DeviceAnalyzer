@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Device Analyzer"
+rootProject.name = "DeviceAnalyzer"
 include(":app")
