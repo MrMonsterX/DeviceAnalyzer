@@ -1,366 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="?attr/actionBarSize"
-    tools:context=".networks.NetworkActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <androidx.cardview.widget.CardView
+        android:layout_margin="15dp"
+        style="@style/Widget.Material3.CardView.Elevated"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="100dp">
 
-<!--        <androidx.cardview.widget.CardView-->
-<!--            android:layout_margin="15dp"-->
-<!--            style="@style/Widget.Material3.CardView.Elevated"-->
-<!--            app:cardCornerRadius="10dp"-->
-<!--            app:cardElevation="5dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-<!--            <LinearLayout-->
-<!--                android:paddingHorizontal="10dp"-->
-<!--                android:paddingBottom="10dp"-->
-<!--                android:gravity="center"-->
-<!--                android:orientation="vertical"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
+            <ImageView
+                android:id="@+id/devFtIc"
+                android:layout_marginHorizontal="30dp"
+                android:layout_gravity="center|start"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/todo" />
 
-<!--                <TextView-->
-<!--                    android:textSize="20sp"-->
-<!--                    android:gravity="center"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:text="WiFi Network"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="30dp"/>-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-<!--                <View-->
-<!--                    android:background="@drawable/divider"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="1dp"/>-->
+                <TextView
+                    android:textSize="15sp"
+                    android:text="Device"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-<!--                <View-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="5dp"/>-->
+                <TextView
+                    android:id="@+id/devFtName"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text=""
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
+            </LinearLayout>
 
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="Status:" />-->
+        </LinearLayout>
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiStatus"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
+    </androidx.cardview.widget.CardView>
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
+    <ListView
+        android:id="@+id/senListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".sensors.SensorActivity">
 
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="Wifi Name:" />-->
+    </ListView>
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiName"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="IPv4 Address:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiIpv4Address"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="IPv6 Address:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiIpv6Address"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="Gateway:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiGateway"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="Subnet Mask:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiSubnetMask"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="Lease Duration:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiLeaseDuration"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="Interface:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiInterface"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="Link Speed:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiLinkSpeed"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="Frequency:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiFrequency"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="Standard:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifiStandard"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="5Ghz Supported:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifi5GhzSupported"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <TextView-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="6Ghz Supported:" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/netWifi6GhzSupported"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1.9"-->
-<!--                        android:gravity="center|start"-->
-<!--                        android:text="" />-->
-<!--                </LinearLayout>-->
-
-<!--            </LinearLayout>-->
-
-<!--        </androidx.cardview.widget.CardView>-->
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

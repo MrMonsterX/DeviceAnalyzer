@@ -1,104 +1,59 @@
 package com.madinaappstudio.deviceanalyzer.sensors;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.madinaappstudio.deviceanalyzer.CrashReporter;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.madinaappstudio.deviceanalyzer.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SensorActivity extends AppCompatActivity {
-    Button tBtnAccelerometer, tBtnProximity, tBtnGyroscope, tBtnLight, tBtnMagnetic,
-    tBtnGravity, tBtnPressure, tBtnTemperature, tBtnOrientation;
+
+    ListView senListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor);
+        senListView = findViewById(R.id.senListView);
 
-        CrashReporter.startCrashThread(this);
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
 
-        tBtnAccelerometer = findViewById(R.id.tBtnAccelerometer);
-        tBtnProximity = findViewById(R.id.tBtnProximity);
-        tBtnGyroscope = findViewById(R.id.tBtnGyroscope);
-        tBtnLight = findViewById(R.id.tBtnLight);
-        tBtnMagnetic = findViewById(R.id.tBtnMagnetic);
-        tBtnGravity = findViewById(R.id.tBtnGravity);
-        tBtnPressure = findViewById(R.id.tBtnPressure);
-        tBtnTemperature = findViewById(R.id.tBtnTemperature);
-        tBtnOrientation = findViewById(R.id.tBtnOrientation);
+        List<String> sensorNames = new ArrayList<>();
+        for (Sensor sensor : sensorList) {
+            sensorNames.add(sensor.getName());
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sensorNames);
+        senListView.setAdapter(arrayAdapter);
 
-        tBtnAccelerometer.setOnClickListener(new View.OnClickListener() {
+
+        senListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                startIntent(1);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(SensorActivity.this, SensorDetails.class);
+                intent.putExtra("type", sensorList.get(position).getType());
+                intent.putExtra("name", sensorList.get(position).getName());
+                intent.putExtra("vendor", sensorList.get(position).getVendor());
+                intent.putExtra("power", sensorList.get(position).getPower());
+                intent.putExtra("version", sensorList.get(position).getVersion());
+                intent.putExtra("resolution", sensorList.get(position).getResolution());
+                intent.putExtra("maxRange", sensorList.get(position).getMaximumRange());
+                intent.putExtra("wakeup", sensorList.get(position).isWakeUpSensor());
+                intent.putExtra("dynamic", sensorList.get(position).isDynamicSensor());
+                SensorActivity.this.startActivity(intent);
             }
         });
 
-        tBtnProximity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startIntent(2);
-            }
-        });
-
-        tBtnGyroscope.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startIntent(3);
-            }
-        });
-
-        tBtnLight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startIntent(4);
-            }
-        });
-
-        tBtnMagnetic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startIntent(5);
-            }
-        });
-
-        tBtnGravity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startIntent(6);
-            }
-        });
-
-        tBtnPressure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startIntent(7);
-            }
-        });
-
-        tBtnTemperature.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startIntent(8);
-            }
-        });
-
-        tBtnOrientation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startIntent(9);
-            }
-        });
     }
-
-    private void startIntent(int id){
-        Intent intent = new Intent(SensorActivity.this, SensorDetails.class)
-                .putExtra("ID", id);
-        startActivity(intent);
-    }
-
 }
