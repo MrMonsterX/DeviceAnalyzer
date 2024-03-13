@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,15 +21,19 @@ import java.util.List;
 public class SensorActivity extends AppCompatActivity {
 
     ListView senListView;
+    TextView senFtSenCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor);
         senListView = findViewById(R.id.senListView);
+        senFtSenCount = findViewById(R.id.senFtSenCount);
 
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+
+        senFtSenCount.setText(String.valueOf(sensorList.size()));
 
         List<String> sensorNames = new ArrayList<>();
         for (Sensor sensor : sensorList) {
