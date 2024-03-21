@@ -14,36 +14,36 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.madinaappstudio.deviceanalyzer.R;
+import com.madinaappstudio.deviceanalyzer.databinding.ActivitySensorBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SensorActivity extends AppCompatActivity {
 
-    ListView senListView;
-    TextView senFtSenCount;
+    private ActivitySensorBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sensor);
-        senListView = findViewById(R.id.senListView);
-        senFtSenCount = findViewById(R.id.senFtSenCount);
+        binding = ActivitySensorBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
 
-        senFtSenCount.setText(String.valueOf(sensorList.size()));
+        binding.senFtSenCount.setText(String.valueOf(sensorList.size()));
 
         List<String> sensorNames = new ArrayList<>();
         for (Sensor sensor : sensorList) {
             sensorNames.add(sensor.getName());
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sensorNames);
-        senListView.setAdapter(arrayAdapter);
+        binding.senListView.setAdapter(arrayAdapter);
 
 
-        senListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.senListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SensorActivity.this, SensorDetails.class);

@@ -22,10 +22,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.madinaappstudio.deviceanalyzer.CrashReporter;
 import com.madinaappstudio.deviceanalyzer.R;
+import com.madinaappstudio.deviceanalyzer.databinding.FragmentCellurarBinding;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -37,14 +39,11 @@ import java.util.ArrayList;
 
 public class CellularFragment extends Fragment {
     Context context;
-    TextView netCellHeadStatus, netCellName, netCellIpv4Address, netCellIpv6Address, netCellSignalStrength, netCellGateway,
-            netCellDNS1, netCellDNS2, netCellDNS3, netCellDNS4, netCellSubnetMask, netCellPublicIp,
-            netCellInterface, netCellDeviceType, cellPubIpAddress;
-    LinearLayout netCellLayoutDNS1, netCellLayoutDNS2, netCellLayoutDNS3, netCellLayoutDNS4, netCellLayoutPubIp;
-    ImageView netCellHeadIc;
+    TextView cellPubIpAddress;
     Button cellPubIpAddressOk;
     ApiCalling apiCalling;
     Dialog dialog;
+    FragmentCellurarBinding binding;
 
     public CellularFragment() {
     }
@@ -53,34 +52,18 @@ public class CellularFragment extends Fragment {
         this.context = context;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cellurar, container, false);
+        binding = FragmentCellurarBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         CrashReporter.startCrashThread(context);
-
-        netCellHeadStatus = view.findViewById(R.id.netCellHeadStatus);
-        netCellHeadIc = view.findViewById(R.id.netCellHeadIc);
-        netCellName = view.findViewById(R.id.netCellName);
-        netCellIpv4Address = view.findViewById(R.id.netCellIpv4Address);
-        netCellIpv6Address = view.findViewById(R.id.netCellIpv6Address);
-        netCellPublicIp = view.findViewById(R.id.netCellPublicIp);
-        netCellSignalStrength = view.findViewById(R.id.netCellSignalStrength);
-        netCellGateway = view.findViewById(R.id.netCellGateway);
-        netCellSubnetMask = view.findViewById(R.id.netCellSubnetMask);
-        netCellInterface = view.findViewById(R.id.netCellInterface);
-        netCellDeviceType = view.findViewById(R.id.netCellDeviceType);
-        netCellLayoutDNS1 = view.findViewById(R.id.netCellLayoutDNS1);
-        netCellLayoutDNS2 = view.findViewById(R.id.netCellLayoutDNS2);
-        netCellLayoutDNS3 = view.findViewById(R.id.netCellLayoutDNS3);
-        netCellLayoutDNS4 = view.findViewById(R.id.netCellLayoutDNS4);
-        netCellLayoutPubIp = view.findViewById(R.id.netCellLayoutPubIp);
-        netCellDNS1 = view.findViewById(R.id.netCellDNS1);
-        netCellDNS2 = view.findViewById(R.id.netCellDNS2);
-        netCellDNS3 = view.findViewById(R.id.netCellDNS3);
-        netCellDNS4 = view.findViewById(R.id.netCellDNS4);
 
         getCellInfo();
 
@@ -115,10 +98,10 @@ public class CellularFragment extends Fragment {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            netCellHeadStatus.setText(R.string.inter_access);
-                            netCellHeadIc.setImageResource(R.drawable.ic_cellular_on_24px);
-                            netCellLayoutPubIp.setVisibility(View.VISIBLE);
-                            netCellPublicIp.setOnClickListener(new View.OnClickListener() {
+                            binding.netCellHeadStatus.setText(R.string.inter_access);
+                            binding.netCellHeadIc.setImageResource(R.drawable.ic_cellular_on_24px);
+                            binding.netCellLayoutPubIp.setVisibility(View.VISIBLE);
+                            binding.netCellPublicIp.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     apiCalling.getPublicIpAddress(new ApiCalling.IpAddressListener() {
@@ -144,9 +127,9 @@ public class CellularFragment extends Fragment {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            netCellHeadStatus.setText(R.string.no_inter_access);
-                            netCellHeadIc.setImageResource(R.drawable.ic_cellular_off_24px);
-                            netCellLayoutPubIp.setVisibility(View.GONE);
+                            binding.netCellHeadStatus.setText(R.string.no_inter_access);
+                            binding.netCellHeadIc.setImageResource(R.drawable.ic_cellular_off_24px);
+                            binding.netCellLayoutPubIp.setVisibility(View.GONE);
                         }
                     });
                 }
@@ -154,21 +137,21 @@ public class CellularFragment extends Fragment {
         }).start();
 
 
-        netCellName.setText(telephonyManager.getSimOperatorName().toUpperCase());
+        binding.netCellName.setText(telephonyManager.getSimOperatorName().toUpperCase());
         if (linkProperties != null) {
             for (LinkAddress linkAddress : linkProperties.getLinkAddresses()) {
                 if (linkAddress.getAddress() instanceof Inet4Address) {
                     IPv4Address = linkAddress.getAddress().getHostAddress();
-                    netCellIpv4Address.setText(IPv4Address);
+                    binding.netCellIpv4Address.setText(IPv4Address);
                 }
                 if (linkAddress.getAddress() instanceof Inet6Address) {
-                    netCellIpv6Address.setText(linkAddress.getAddress().getHostAddress());
+                    binding.netCellIpv6Address.setText(linkAddress.getAddress().getHostAddress());
                 }
             }
             for (RouteInfo routeInfo : linkProperties.getRoutes()) {
                 InetAddress inetAddress = routeInfo.getGateway();
                 if (inetAddress instanceof Inet4Address) {
-                    netCellGateway.setText(inetAddress.getHostAddress());
+                    binding.netCellGateway.setText(inetAddress.getHostAddress());
                     break;
                 }
             }
@@ -178,28 +161,28 @@ public class CellularFragment extends Fragment {
                 dnsList.add(inetAddress.getHostAddress());
             }
             if (dnsList.size() == 1) {
-                netCellDNS1.setText(dnsList.get(0));
-                netCellLayoutDNS1.setVisibility(View.VISIBLE);
+                binding.netCellDNS1.setText(dnsList.get(0));
+                binding.netCellLayoutDNS1.setVisibility(View.VISIBLE);
             } else if (dnsList.size() == 2) {
-                netCellDNS1.setText(dnsList.get(0));
-                netCellDNS2.setText(dnsList.get(1));
-                netCellLayoutDNS1.setVisibility(View.VISIBLE);
-                netCellLayoutDNS2.setVisibility(View.VISIBLE);
+                binding.netCellDNS1.setText(dnsList.get(0));
+                binding.netCellDNS2.setText(dnsList.get(1));
+                binding.netCellLayoutDNS1.setVisibility(View.VISIBLE);
+                binding.netCellLayoutDNS2.setVisibility(View.VISIBLE);
             } else if (dnsList.size() == 4) {
-                netCellDNS1.setText(dnsList.get(0));
-                netCellDNS2.setText(dnsList.get(1));
-                netCellDNS3.setText(dnsList.get(2));
-                netCellDNS4.setText(dnsList.get(3));
-                netCellLayoutDNS1.setVisibility(View.VISIBLE);
-                netCellLayoutDNS2.setVisibility(View.VISIBLE);
-                netCellLayoutDNS3.setVisibility(View.VISIBLE);
-                netCellLayoutDNS4.setVisibility(View.VISIBLE);
+                binding.netCellDNS1.setText(dnsList.get(0));
+                binding.netCellDNS2.setText(dnsList.get(1));
+                binding.netCellDNS3.setText(dnsList.get(2));
+                binding.netCellDNS4.setText(dnsList.get(3));
+                binding.netCellLayoutDNS1.setVisibility(View.VISIBLE);
+                binding.netCellLayoutDNS2.setVisibility(View.VISIBLE);
+                binding.netCellLayoutDNS3.setVisibility(View.VISIBLE);
+                binding.netCellLayoutDNS4.setVisibility(View.VISIBLE);
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
                 if (telephonyManager.getSignalStrength() != null){
                     for (CellSignalStrength cellSignalStrength : telephonyManager.getSignalStrength().getCellSignalStrengths()) {
-                        netCellSignalStrength.setText(String.valueOf("dBm " + cellSignalStrength.getDbm()));
+                        binding.netCellSignalStrength.setText(String.valueOf("dBm " + cellSignalStrength.getDbm()));
                     }
                 }
             } else {
@@ -211,11 +194,11 @@ public class CellularFragment extends Fragment {
                         Object dbmObject = getDbmMethod.invoke(signalStrength);
                         if (dbmObject != null) {
                             int dbm = (Integer) dbmObject;
-                            netCellSignalStrength.setText("dBm " + dbm);
+                            binding.netCellSignalStrength.setText("dBm " + dbm);
                         }
                     }
                 } catch (Exception e) {
-                    netCellSignalStrength.setText(R.string.not_available);
+                    binding.netCellSignalStrength.setText(R.string.not_available);
                     Log.d("getDBmTag", "getCellInfo: " + e);
                 }
             }
@@ -225,13 +208,13 @@ public class CellularFragment extends Fragment {
                 byte[] ipAddressBytes = ipAddress.getAddress();
                 char addressClass = getIpAddressClass(ipAddressBytes[0]);
                 String subnetMask = getSubnetMask(addressClass);
-                netCellSubnetMask.setText(subnetMask);
+                binding.netCellSubnetMask.setText(subnetMask);
             } catch (UnknownHostException e) {
-                netCellSubnetMask.setText(R.string.not_available);
+                binding.netCellSubnetMask.setText(R.string.not_available);
             }
 
-            netCellInterface.setText(linkProperties.getInterfaceName());
-            netCellDeviceType.setText(getPhoneTypeName(telephonyManager));
+            binding.netCellInterface.setText(linkProperties.getInterfaceName());
+            binding.netCellDeviceType.setText(getPhoneTypeName(telephonyManager));
 
 
 

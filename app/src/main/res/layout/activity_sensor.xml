@@ -43,7 +43,6 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/devFtName"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:text="Sensors Available"
