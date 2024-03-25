@@ -1,33 +1,31 @@
 package com.madinaappstudio.deviceanalyzer;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.madinaappstudio.deviceanalyzer.databinding.ActivityMainBinding;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.madinaappstudio.deviceanalyzer.databinding.ActivityHomeBinding;
 import com.madinaappstudio.deviceanalyzer.networks.NetworkActivity;
 import com.madinaappstudio.deviceanalyzer.sensors.SensorActivity;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
     private Handler handler;
     Runnable timeRunnable;
     
-    ActivityMainBinding binding;
+    ActivityHomeBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
@@ -40,21 +38,21 @@ public class MainActivity extends AppCompatActivity {
         binding.mBtnSystem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SystemActivity.class));
+                startActivity(new Intent(HomeActivity.this, SystemActivity.class));
             }
         });
 
         binding.mBtnSensors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SensorActivity.class));
+                startActivity(new Intent(HomeActivity.this, SensorActivity.class));
             }
         });
 
         binding.mBtnHardware.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, HardwareActivity.class));
+                startActivity(new Intent(HomeActivity.this, HardwareActivity.class));
             }
         });
 
@@ -62,21 +60,21 @@ public class MainActivity extends AppCompatActivity {
         binding.mBtnDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, DeviceActivity.class));
+                startActivity(new Intent(HomeActivity.this, DeviceActivity.class));
             }
         });
 
         binding.mBtnNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, NetworkActivity.class));
+                startActivity(new Intent(HomeActivity.this, NetworkActivity.class));
             }
         });
 
         binding.mBtnConnectivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ConnectivityActivity.class));
+                startActivity(new Intent(HomeActivity.this, ConnectivityActivity.class));
             }
         });
 
