@@ -61,6 +61,7 @@
     <string name="kirin">Kirin</string>
     <string name="google_tensor">Google Tensor</string>
     <string name="unable_to_fetch">Unable to fetch! Try again later.</string>
+    <string name="apps">Apps</string>
 
 
 </resources>
