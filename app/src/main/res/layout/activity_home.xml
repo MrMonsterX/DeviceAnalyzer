@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_weight="1.2">
+
+        <TextView
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+            android:id="@+id/mainText"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:text=""
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/main_ui_part"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainText">
+
+            <TextView
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:id="@+id/mDeviceModel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        app:layout_constraintBottom_toBottomOf="parent" >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent" >
+
+            <LinearLayout
+                android:layout_marginTop="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        android:id="@+id/mBtnSystem"
+                        app:icon="@drawable/ic_system_24px"
+                        app:iconGravity="textStart"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:text="@string/system" />
+
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="100dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        android:id="@+id/mBtnDevice"
+                        app:icon="@drawable/ic_device_24px"
+                        app:iconGravity="textStart"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:text="@string/device" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        android:id="@+id/mBtnSensors"
+                        app:icon="@drawable/ic_sensors_24px"
+                        app:iconGravity="textStart"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:text="@string/sensors" />
+
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="100dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        android:id="@+id/mBtnNetwork"
+                        app:icon="@drawable/ic_network_24px"
+                        app:iconGravity="textStart"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:text="@string/network" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        android:id="@+id/mBtnHardware"
+                        app:icon="@drawable/ic_soc_24px"
+                        app:iconGravity="textStart"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:text="@string/hardware" />
+
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="100dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        android:id="@+id/mBtnConnectivity"
+                        app:icon="@drawable/ic_network_24px"
+                        app:iconGravity="textStart"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:text="@string/connectivity" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                        android:id="@+id/mBtnApps"
+                        app:icon="@drawable/ic_apps_24px"
+                        app:iconGravity="textStart"
+                        android:layout_width="150dp"
+                        android:layout_height="100dp"
+                        android:text="@string/apps" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
