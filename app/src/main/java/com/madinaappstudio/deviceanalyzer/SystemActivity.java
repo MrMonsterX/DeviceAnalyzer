@@ -19,85 +19,54 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.madinaappstudio.deviceanalyzer.databinding.ActivitySystemBinding;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class SystemActivity extends AppCompatActivity {
-
-    TextView sysOsFtName, sysOsAndroidVersion, sysOsApiLevel, sysOsBuildID, sysOsKernelVersion, sysOsKernelArch, sysOsRootAccess, sysOsGPlayService,
-            sysOsSecurityPatch, sysOsArtVersion, sysOsBootloader, sysOsUpTime, sysBatFtName, sysBatLevel, sysBatStatus, sysBatHealth, sysBatVoltage,
-            sysBatTemperature, sysBatTechnology, sysBatFullCapacity, sysBatCapacityInAds, sysBatChargeCounter, sysBatUntilFullyCharge,
-            sysBatChargingSource;
     Handler handlerUpTime = new Handler();
     Handler handlerBattery = new Handler();
     Runnable upTimeRunnable, batRunnable;
-    LinearLayout viewUntilFullyCharged;
-    ImageView sysOsFtIc, sysBatFtIc;
     SetHeadDetails setHeadDetails = new SetHeadDetails();
+    ActivitySystemBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_system);
+        binding = ActivitySystemBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         CrashReporter.startCrashThread(this);
 
-        viewUntilFullyCharged = findViewById(R.id.viewUntilFullyCharged);
-
-        sysOsFtIc = findViewById(R.id.sysOsFtIc);
-        sysOsFtName = findViewById(R.id.sysOsFtName);
-        sysOsAndroidVersion = findViewById(R.id.sysOsAndroidVersion);
-        sysOsApiLevel = findViewById(R.id.sysOsApiLevel);
-        sysOsBuildID = findViewById(R.id.sysOsBuildID);
-        sysOsKernelVersion = findViewById(R.id.sysOsKernelVersion);
-        sysOsKernelArch = findViewById(R.id.sysOsKernelArch);
-        sysOsRootAccess = findViewById(R.id.sysOsRootAccess);
-        sysOsGPlayService = findViewById(R.id.sysOsGPlayService);
-        sysOsSecurityPatch = findViewById(R.id.sysOsSecurityPatch);
-        sysOsArtVersion = findViewById(R.id.sysOsArtVersion);
-        sysOsBootloader = findViewById(R.id.sysOsBootloader);
-        sysOsUpTime = findViewById(R.id.sysOsUpTime);
-        sysBatFtIc = findViewById(R.id.sysBatFtIc);
-        sysBatFtName = findViewById(R.id.sysBatFtName);
-        sysBatLevel = findViewById(R.id.sysBatLevel);
-        sysBatStatus = findViewById(R.id.sysBatStatus);
-        sysBatHealth = findViewById(R.id.sysBatHealth);
-        sysBatVoltage = findViewById(R.id.sysBatVoltage);
-        sysBatTemperature = findViewById(R.id.sysBatTemperature);
-        sysBatTechnology = findViewById(R.id.sysBatTechnology);
-        sysBatFullCapacity = findViewById(R.id.sysBatFullCapacity);
-        sysBatCapacityInAds = findViewById(R.id.sysBatCapacityInAds);
-        sysBatChargeCounter = findViewById(R.id.sysBatChargeCounter);
-        sysBatUntilFullyCharge = findViewById(R.id.sysBatUntilFullyCharge);
-        sysBatChargingSource = findViewById(R.id.sysBatChargingSource);
-
         // Operating System
-        sysOsAndroidVersion.setText(String.valueOf(Build.VERSION.RELEASE));
+        binding.sysOsAndroidVersion.setText(String.valueOf(Build.VERSION.RELEASE));
         int apiLevel = Build.VERSION.SDK_INT;
-        sysOsApiLevel.setText(String.valueOf(apiLevel));
-        setHeadDetails.ofSysOs(apiLevel, sysOsFtName, sysOsFtIc);
-        sysOsBuildID.setText(String.valueOf(Build.ID));
-        sysOsKernelVersion.setText(String.valueOf(System.getProperty("os.version")));
-        sysOsKernelArch.setText(String.valueOf(System.getProperty("os.arch")));
+        binding.sysOsApiLevel.setText(String.valueOf(apiLevel));
+        setHeadDetails.ofSysOs(apiLevel, binding.sysOsFtName, binding.sysOsFtIc);
+        binding.sysOsBuildID.setText(String.valueOf(Build.ID));
+        binding.sysOsKernelVersion.setText(String.valueOf(System.getProperty("os.version")));
+        binding.sysOsKernelArch.setText(String.valueOf(System.getProperty("os.arch")));
         if (isRooted()){
-            sysOsRootAccess.setText(R.string.rooted);
+            binding.sysOsRootAccess.setText(R.string.rooted);
         } else {
-            sysOsRootAccess.setText(R.string.non_rooted);
+            binding.sysOsRootAccess.setText(R.string.non_rooted);
         }
         String  gPlayVersion = getPlayServicesVersion(this);
         if (gPlayVersion != null) {
-            sysOsGPlayService.setText(gPlayVersion);
+            binding.sysOsGPlayService.setText(gPlayVersion);
         } else {
-            sysOsGPlayService.setText(R.string.not_supported);
+            binding.sysOsGPlayService.setText(R.string.not_supported);
         }
-        sysOsSecurityPatch.setText(String.valueOf(Build.VERSION.SECURITY_PATCH));
-        sysOsArtVersion.setText(String.valueOf(System.getProperty("java.vm.version")));
-        sysOsBootloader.setText(String.valueOf(Build.BOOTLOADER));
+        binding.sysOsSecurityPatch.setText(String.valueOf(Build.VERSION.SECURITY_PATCH));
+        binding.sysOsArtVersion.setText(String.valueOf(System.getProperty("java.vm.version")));
+        binding.sysOsBootloader.setText(String.valueOf(Build.BOOTLOADER));
         upTimeRunnable = new Runnable() {
             @Override
             public void run() {
                 long[] upTime = getUpTime();
-                sysOsUpTime.setText(String.valueOf(upTime[0] + " Days, " + upTime[1] +":"+ upTime[2] +":"+ upTime[3]));
+                binding.sysOsUpTime.setText(String.valueOf(upTime[0] + " Days, " + upTime[1] +":"+ upTime[2] +":"+ upTime[3]));
                 handlerUpTime.postDelayed(this, 1000);
             }
         };
@@ -116,33 +85,33 @@ public class SystemActivity extends AppCompatActivity {
                 int batteryLevel = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
                 int batteryScale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
                 float batteryPercentage = batteryLevel / (float) batteryScale * 100;
-                sysBatLevel.setText(String.valueOf(batteryPercentage + "%"));
+                binding.sysBatLevel.setText(String.valueOf(batteryPercentage + "%"));
 
                 int staInt = batteryIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
                 String status = getStatusString(staInt);
-                sysBatStatus.setText(status);
+                binding.sysBatStatus.setText(status);
 
-                setHeadDetails.ofSysBat(batteryPercentage, status, sysBatFtName, sysBatFtIc);
+                setHeadDetails.ofSysBat(batteryPercentage, status, binding.sysBatFtName, binding.sysBatFtIc);
 
                 int health = batteryIntent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1);
-                sysBatHealth.setText(getHealthString(health));
+                binding.sysBatHealth.setText(getHealthString(health));
 
                 int voltage = batteryIntent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1);
-                sysBatVoltage.setText(String.valueOf(voltage + " mV"));
+                binding.sysBatVoltage.setText(String.valueOf(voltage + " mV"));
 
                 int temperature = batteryIntent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1);
-                sysBatTemperature.setText(String.valueOf(temperature / 10.0 + " °C"));
+                binding.sysBatTemperature.setText(String.valueOf(temperature / 10.0 + " °C"));
 
                 String technology = batteryIntent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY);
-                sysBatTechnology.setText(technology != null ? technology : "Unknown");
+                binding.sysBatTechnology.setText(technology != null ? technology : "Unknown");
 
                 long currentCapacity = batteryManager.getLongProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
                 long counter = batteryManager.getLongProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER);
-                sysBatFullCapacity.setText(String.valueOf((counter/currentCapacity/10) + " mAh"));
+                binding.sysBatFullCapacity.setText(String.valueOf((counter/currentCapacity/10) + " mAh"));
 
                 double batteryCapacityInAds = getBatteryCapacity(SystemActivity.this);
-                sysBatCapacityInAds.setText(String.valueOf(batteryCapacityInAds + " mAh"));
-                sysBatChargeCounter.setText(String.valueOf(counter/1000 + " mAh"));
+                binding.sysBatCapacityInAds.setText(String.valueOf(batteryCapacityInAds + " mAh"));
+                binding.sysBatChargeCounter.setText(String.valueOf(counter/1000 + " mAh"));
 
                 if (status.equals("Charging")){
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
@@ -150,14 +119,14 @@ public class SystemActivity extends AppCompatActivity {
                         long hours = timeFullyCharged / (1000 * 60 * 60);
                         long minutes = (timeFullyCharged % (1000 * 60 * 60)) / (1000 * 60);
                         long seconds = ((timeFullyCharged % (1000 * 60 * 60)) % (1000 * 60)) / 1000;
-                        sysBatUntilFullyCharge.setText(String.valueOf(hours +"h "+ minutes+"m "+ seconds +"s"));
-                        viewUntilFullyCharged.setVisibility(View.VISIBLE);
+                        binding.sysBatUntilFullyCharge.setText(String.valueOf(hours +"h "+ minutes+"m "+ seconds +"s"));
+                        binding.viewUntilFullyCharged.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    viewUntilFullyCharged.setVisibility(View.GONE);
+                    binding.viewUntilFullyCharged.setVisibility(View.GONE);
                 }
                 int plugged = batteryIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-                sysBatChargingSource.setText(String.valueOf(getChargingSource(plugged)));
+                binding.sysBatChargingSource.setText(String.valueOf(getChargingSource(plugged)));
                 handlerBattery.postDelayed(this, 1000);
             }
         };

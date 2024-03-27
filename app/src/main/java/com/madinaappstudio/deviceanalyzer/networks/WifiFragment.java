@@ -22,10 +22,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.madinaappstudio.deviceanalyzer.CrashReporter;
 import com.madinaappstudio.deviceanalyzer.R;
+import com.madinaappstudio.deviceanalyzer.databinding.FragmentWifiBinding;
 
 import java.io.IOException;
 import java.net.Inet4Address;
@@ -36,16 +38,11 @@ import java.util.Locale;
 
 public class WifiFragment extends Fragment {
     Context context;
-    TextView netWifiHeadStatus, netWifiIpv4Address, netWifiIpv6Address, netWifiPublicIp, netWifiGateway,
-            netWifiSubnetMask, netWifiLeaseDuration, netWifiInterface, netWifiLinkSpeed,
-            netWifiFrequency, netWifiStandard, netWifi5GhzSupported, netWifi6GhzSupported,
-            netWifiDNS1, netWifiDNS2, netWifiDNS3, netWifiDNS4, wifiPubIpAddress;
-
-    LinearLayout netWifiLayoutDNS1, netWifiLayoutDNS2, netWifiLayoutDNS3, netWifiLayoutDNS4, netWifiLayoutPubIp;
-    ImageView netWifiHeadIc;
+    TextView wifiPubIpAddress;
     Button wifiPubIpAddressOk;
     ApiCalling apiCalling;
     Dialog dialog;
+    FragmentWifiBinding binding;
 
     public WifiFragment() {}
 
@@ -54,35 +51,17 @@ public class WifiFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_wifi, container, false);
+        binding = FragmentWifiBinding.inflate(inflater, container, false);
+        View view =  binding.getRoot();
 
         CrashReporter.startCrashThread(context);
-
-        netWifiHeadIc = view.findViewById(R.id.netWifiHeadIc);
-        netWifiHeadStatus = view.findViewById(R.id.netWifiHeadStatus);
-        netWifiIpv4Address = view.findViewById(R.id.netWifiIpv4Address);
-        netWifiIpv6Address = view.findViewById(R.id.netWifiIpv6Address);
-        netWifiPublicIp = view.findViewById(R.id.netWifiPublicIp);
-        netWifiGateway = view.findViewById(R.id.netWifiGateway);
-        netWifiSubnetMask = view.findViewById(R.id.netWifiSubnetMask);
-        netWifiLeaseDuration = view.findViewById(R.id.netWifiLeaseDuration);
-        netWifiInterface = view.findViewById(R.id.netWifiInterface);
-        netWifiLinkSpeed = view.findViewById(R.id.netWifiLinkSpeed);
-        netWifiFrequency = view.findViewById(R.id.netWifiFrequency);
-        netWifiStandard = view.findViewById(R.id.netWifiStandard);
-        netWifi5GhzSupported = view.findViewById(R.id.netWifi5GhzSupported);
-        netWifi6GhzSupported = view.findViewById(R.id.netWifi6GhzSupported);
-        netWifiLayoutDNS1 = view.findViewById(R.id.netWifiLayoutDNS1);
-        netWifiLayoutDNS2 = view.findViewById(R.id.netWifiLayoutDNS2);
-        netWifiLayoutDNS3 = view.findViewById(R.id.netWifiLayoutDNS3);
-        netWifiLayoutDNS4 = view.findViewById(R.id.netWifiLayoutDNS4);
-        netWifiDNS1 = view.findViewById(R.id.netWifiDNS1);
-        netWifiDNS2 = view.findViewById(R.id.netWifiDNS2);
-        netWifiDNS3 = view.findViewById(R.id.netWifiDNS3);
-        netWifiDNS4 = view.findViewById(R.id.netWifiDNS4);
-        netWifiLayoutPubIp = view.findViewById(R.id.netWifiLayoutPubIp);
 
         getWifiInfo();
 
@@ -115,10 +94,10 @@ public class WifiFragment extends Fragment {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            netWifiHeadStatus.setText(R.string.inter_access);
-                            netWifiHeadIc.setImageResource(R.drawable.ic_wifi_on_24px);
-                            netWifiLayoutPubIp.setVisibility(View.VISIBLE);
-                            netWifiPublicIp.setOnClickListener(new View.OnClickListener() {
+                            binding.netWifiHeadStatus.setText(R.string.inter_access);
+                            binding.netWifiHeadIc.setImageResource(R.drawable.ic_wifi_on_24px);
+                            binding.netWifiLayoutPubIp.setVisibility(View.VISIBLE);
+                            binding.netWifiPublicIp.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     apiCalling.getPublicIpAddress(new ApiCalling.IpAddressListener() {
@@ -145,9 +124,9 @@ public class WifiFragment extends Fragment {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            netWifiHeadStatus.setText(R.string.no_inter_access);
-                            netWifiHeadIc.setImageResource(R.drawable.ic_wifi_off_24px);
-                            netWifiLayoutPubIp.setVisibility(View.GONE);
+                            binding.netWifiHeadStatus.setText(R.string.no_inter_access);
+                            binding.netWifiHeadIc.setImageResource(R.drawable.ic_wifi_off_24px);
+                            binding.netWifiLayoutPubIp.setVisibility(View.GONE);
                         }
                     });
                 }
@@ -157,26 +136,26 @@ public class WifiFragment extends Fragment {
         if (linkProperties != null){
             for (LinkAddress linkAddress: linkProperties.getLinkAddresses()){
                 if (linkAddress.getAddress() instanceof Inet4Address){
-                    netWifiIpv4Address.setText(linkAddress.getAddress().getHostAddress());
+                    binding.netWifiIpv4Address.setText(linkAddress.getAddress().getHostAddress());
                 }
                 if (linkAddress.getAddress() instanceof Inet6Address){
-                    netWifiIpv6Address.setText(linkAddress.getAddress().getHostAddress());
+                    binding.netWifiIpv6Address.setText(linkAddress.getAddress().getHostAddress());
                 }
             }
-            netWifiInterface.setText(linkProperties.getInterfaceName());
+            binding.netWifiInterface.setText(linkProperties.getInterfaceName());
         } else {
-            netWifiInterface.setText(R.string.not_found);
+            binding.netWifiInterface.setText(R.string.not_found);
         }
         int gateway = wifiManager.getDhcpInfo().gateway;
         int subnet = wifiManager.getDhcpInfo().netmask;
         int leaseDuration = wifiManager.getDhcpInfo().leaseDuration;
 
-        netWifiGateway.setText(formatAddress(gateway));
+        binding.netWifiGateway.setText(formatAddress(gateway));
         if (subnet <= 0){
             Log.d("TAG", "getWifiInfo: " + subnet);
-            netWifiSubnetMask.setText(formatSubnet(subnet));
+            binding.netWifiSubnetMask.setText(formatSubnet(subnet));
         } else {
-            netWifiSubnetMask.setText(formatSubnet(24));
+            binding.netWifiSubnetMask.setText(formatSubnet(24));
             Log.d("TAG", "getWifiInfo: " + subnet);
         }
 
@@ -186,39 +165,39 @@ public class WifiFragment extends Fragment {
             dnsList.add(inetAddress.getHostAddress());
         }
         if (dnsList.size() == 1) {
-            netWifiDNS1.setText(dnsList.get(0));
-            netWifiLayoutDNS1.setVisibility(View.VISIBLE);
+            binding.netWifiDNS1.setText(dnsList.get(0));
+            binding.netWifiLayoutDNS1.setVisibility(View.VISIBLE);
         } else if (dnsList.size() == 2) {
-            netWifiDNS1.setText(dnsList.get(0));
-            netWifiDNS2.setText(dnsList.get(1));
-            netWifiLayoutDNS1.setVisibility(View.VISIBLE);
-            netWifiLayoutDNS2.setVisibility(View.VISIBLE);
+            binding.netWifiDNS1.setText(dnsList.get(0));
+            binding.netWifiDNS2.setText(dnsList.get(1));
+            binding.netWifiLayoutDNS1.setVisibility(View.VISIBLE);
+            binding.netWifiLayoutDNS2.setVisibility(View.VISIBLE);
         } else if (dnsList.size() == 4) {
-            netWifiDNS1.setText(dnsList.get(0));
-            netWifiDNS2.setText(dnsList.get(1));
-            netWifiDNS3.setText(dnsList.get(2));
-            netWifiDNS4.setText(dnsList.get(3));
-            netWifiLayoutDNS1.setVisibility(View.VISIBLE);
-            netWifiLayoutDNS2.setVisibility(View.VISIBLE);
-            netWifiLayoutDNS3.setVisibility(View.VISIBLE);
-            netWifiLayoutDNS4.setVisibility(View.VISIBLE);
+            binding.netWifiDNS1.setText(dnsList.get(0));
+            binding.netWifiDNS2.setText(dnsList.get(1));
+            binding.netWifiDNS3.setText(dnsList.get(2));
+            binding.netWifiDNS4.setText(dnsList.get(3));
+            binding.netWifiLayoutDNS1.setVisibility(View.VISIBLE);
+            binding.netWifiLayoutDNS2.setVisibility(View.VISIBLE);
+            binding.netWifiLayoutDNS3.setVisibility(View.VISIBLE);
+            binding.netWifiLayoutDNS4.setVisibility(View.VISIBLE);
         }
 
-        netWifiLeaseDuration.setText(leaseDuration + " Seconds");
+        binding.netWifiLeaseDuration.setText(leaseDuration + " Seconds");
 
-        netWifiLinkSpeed.setText(wifiInfo.getLinkSpeed() +" "+ WifiInfo.LINK_SPEED_UNITS);
-        netWifiFrequency.setText(wifiInfo.getFrequency() +" "+ WifiInfo.FREQUENCY_UNITS);
-        netWifiStandard.setText(getWifiStandard(wifiInfo));
+        binding.netWifiLinkSpeed.setText(wifiInfo.getLinkSpeed() +" "+ WifiInfo.LINK_SPEED_UNITS);
+        binding.netWifiFrequency.setText(wifiInfo.getFrequency() +" "+ WifiInfo.FREQUENCY_UNITS);
+        binding.netWifiStandard.setText(getWifiStandard(wifiInfo));
         if (wifiManager.is5GHzBandSupported()){
-            netWifi5GhzSupported.setText(R.string.yes);
+            binding.netWifi5GhzSupported.setText(R.string.yes);
         } else {
-            netWifi5GhzSupported.setText(R.string.no);
+            binding.netWifi5GhzSupported.setText(R.string.no);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (wifiManager.is6GHzBandSupported()){
-                netWifi6GhzSupported.setText(R.string.yes);
+                binding.netWifi6GhzSupported.setText(R.string.yes);
             } else {
-                netWifi6GhzSupported.setText(R.string.no);
+                binding.netWifi6GhzSupported.setText(R.string.no);
             }
         }
 

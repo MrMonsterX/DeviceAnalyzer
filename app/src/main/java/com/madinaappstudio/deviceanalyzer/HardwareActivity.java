@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.madinaappstudio.deviceanalyzer.databinding.ActivityHardwareBinding;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -37,21 +39,18 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class HardwareActivity extends AppCompatActivity implements GLSurfaceView.Renderer{
-
-    TextView hardSocFtName, hardSocManufacturer, hardSocModel, hardSocArchitecture, hardSocClockSpeed, hardSocCpuCores, hardSocGpuVendor,
-            hardSocGpuRenderer, hardSocGpuVersion, hardSocGpuExtension, hardSocBtnMore, hardDisFtName,hardDisScreenSize, hardDisResolution,
-            hardDisDensityDpi, hardDisRefreshRate, hardDisHdrSupport, hardDisWideColorGamut, hardDisLuminance, hardDisPixelPerInch,
-            hardMemFtName, hardRamSize, hardRamOccupied, hardRamAvailable, hardStoSize, hardStoOccupied, hardStoAvailable;
+    
     private int numCores;
     TextView[] coreName;
-    LinearLayout hardSocCoreLiveFreq;
     StringBuilder sbGpuExt = new StringBuilder();
-    ImageView hardSocFtIc, hardDisFtIc, hardMemFtIc;
+    ActivityHardwareBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hardware);
+        binding = ActivityHardwareBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         CrashReporter.startCrashThread(this);
 
@@ -59,61 +58,29 @@ public class HardwareActivity extends AppCompatActivity implements GLSurfaceView
         int textViewHeight = getResources().getDimensionPixelSize(R.dimen.textview_height);
         int textViewWidth = getResources().getDimensionPixelSize(R.dimen.textview_width);
 
-        hardSocFtName = findViewById(R.id.hardSocFtName);
-        hardSocFtIc = findViewById(R.id.hardSocFtIc);
-        hardSocManufacturer = findViewById(R.id.hardSocManufacturer);
-        hardSocModel = findViewById(R.id.hardSocModel);
-        hardSocArchitecture = findViewById(R.id.hardSocArchitecture);
-        hardSocClockSpeed = findViewById(R.id.hardSocClockSpeed);
-        hardSocCpuCores = findViewById(R.id.hardSocCpuCores);
-        hardSocGpuVendor = findViewById(R.id.hardSocGpuVendor);
-        hardSocGpuRenderer = findViewById(R.id.hardSocGpuRenderer);
-        hardSocGpuVersion = findViewById(R.id.hardSocGpuVersion);
-        hardSocGpuExtension = findViewById(R.id.hardSocGpuExtension);
-        hardSocBtnMore = findViewById(R.id.hardSocBtnMore);
-        hardDisFtName = findViewById(R.id.hardDisFtName);
-        hardDisFtIc = findViewById(R.id.hardDisFtIc);
-        hardDisScreenSize = findViewById(R.id.hardDisScreenSize);
-        hardDisResolution = findViewById(R.id.hardDisResolution);
-        hardDisDensityDpi = findViewById(R.id.hardDisDensityDpi);
-        hardDisRefreshRate = findViewById(R.id.hardDisRefreshRate);
-        hardDisHdrSupport = findViewById(R.id.hardDisHdrSupport);
-        hardDisWideColorGamut = findViewById(R.id.hardDisWideColorGamut);
-        hardDisLuminance = findViewById(R.id.hardDisLuminance);
-        hardDisPixelPerInch = findViewById(R.id.hardDisPixelPerInch);
-        hardMemFtIc = findViewById(R.id.hardMemFtIc);
-        hardMemFtName = findViewById(R.id.hardMemFtName);
-        hardRamSize = findViewById(R.id.hardRamSize);
-        hardRamOccupied = findViewById(R.id.hardRamOccupied);
-        hardRamAvailable = findViewById(R.id.hardRamAvailable);
-        hardStoSize = findViewById(R.id.hardStoSize);
-        hardStoOccupied = findViewById(R.id.hardStoOccupied);
-        hardStoAvailable = findViewById(R.id.hardStoAvailable);
-        hardSocCoreLiveFreq = findViewById(R.id.hardSocCoreLiveFreq);
-
         SetHeadDetails setHeadDetails = new SetHeadDetails();
-        setHeadDetails.ofHardSoc(hardSocFtName, hardSocFtIc);
+        setHeadDetails.ofHardSoc(binding.hardSocFtName, binding.hardSocFtIc);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            hardSocManufacturer.setText(Build.SOC_MANUFACTURER);
-            hardSocModel.setText(Build.SOC_MODEL);
+            binding.hardSocManufacturer.setText(Build.SOC_MANUFACTURER);
+            binding.hardSocModel.setText(Build.SOC_MODEL);
         }
         String[] arch = Build.SUPPORTED_ABIS;
         if (arch.length == 1){
-            hardSocArchitecture.setText(String.valueOf(arch[0]));
+            binding.hardSocArchitecture.setText(String.valueOf(arch[0]));
         } else if (arch.length == 2) {
-            hardSocArchitecture.setText(String.valueOf(arch[0] +", "+ arch[1]));
+            binding.hardSocArchitecture.setText(String.valueOf(arch[0] +", "+ arch[1]));
         } else if (arch.length == 3) {
-            hardSocArchitecture.setText(String.valueOf(arch[0] +", "+ arch[1] +", "+ arch[2]));
+            binding.hardSocArchitecture.setText(String.valueOf(arch[0] +", "+ arch[1] +", "+ arch[2]));
         }
-        hardSocClockSpeed.setText(String.format(Locale.US, "%.1f", getClockSpeed()) + "Ghz");
-        hardSocCpuCores.setText(String.valueOf(numCores));
-        hardSocGpuExtension.setOnClickListener(new View.OnClickListener() {
+        binding.hardSocClockSpeed.setText(String.format(Locale.US, "%.1f", getClockSpeed()) + "Ghz");
+        binding.hardSocCpuCores.setText(String.valueOf(numCores));
+        binding.hardSocGpuExtension.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 displayGPUExtensions();
             }
         });
-        hardSocBtnMore.setOnClickListener(new View.OnClickListener() {
+        binding.hardSocBtnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 displayCPUInfo();
@@ -136,7 +103,7 @@ public class HardwareActivity extends AppCompatActivity implements GLSurfaceView
             if (i + 1 < numCores) {
                 coreName[i + 1] = createTextView(params, rowLayout);
             }
-            hardSocCoreLiveFreq.addView(rowLayout);
+            binding.hardSocCoreLiveFreq.addView(rowLayout);
         }
 
         Timer timer = new Timer();
@@ -180,28 +147,28 @@ public class HardwareActivity extends AppCompatActivity implements GLSurfaceView
         float heightInches = displayMetrics.heightPixels / displayMetrics.ydpi;
         double sizeInch = Math.sqrt(Math.pow(widthInches, 2) + Math.pow(heightInches, 2));
 
-        setHeadDetails.ofHardDis(hardDisFtIc, hardDisFtName, displayName);
+        setHeadDetails.ofHardDis(binding.hardDisFtIc, binding.hardDisFtName, displayName);
 
-        hardDisScreenSize.setText(String.format(Locale.US,"%.1f", sizeInch) + " In");
-        hardDisResolution.setText(String.valueOf(width +" x "+ height));
-        hardDisDensityDpi.setText(String.valueOf(displayMetrics.densityDpi));
-        hardDisRefreshRate.setText(String.valueOf((int) display.getRefreshRate() + "Hz"));
+        binding.hardDisScreenSize.setText(String.format(Locale.US,"%.1f", sizeInch) + " In");
+        binding.hardDisResolution.setText(String.valueOf(width +" x "+ height));
+        binding.hardDisDensityDpi.setText(String.valueOf(displayMetrics.densityDpi));
+        binding.hardDisRefreshRate.setText(String.valueOf((int) display.getRefreshRate() + "Hz"));
         if (display.isHdr()){
-            hardDisHdrSupport.setText(R.string.supported);
+            binding.hardDisHdrSupport.setText(R.string.supported);
         } else {
-            hardDisHdrSupport.setText(R.string.not_supported);
+            binding.hardDisHdrSupport.setText(R.string.not_supported);
         }
         if (display.isWideColorGamut()){
-            hardDisWideColorGamut.setText(R.string.supported);
+            binding.hardDisWideColorGamut.setText(R.string.supported);
         } else {
-            hardDisWideColorGamut.setText(R.string.not_supported);
+            binding.hardDisWideColorGamut.setText(R.string.not_supported);
         }
         int minLum = (int) display.getHdrCapabilities().getDesiredMinLuminance();
         int maxLum = (int) display.getHdrCapabilities().getDesiredMaxLuminance();
-        hardDisLuminance.setText(String.valueOf("Min: "+ minLum +" Max: "+ maxLum));
+        binding.hardDisLuminance.setText(String.valueOf("Min: "+ minLum +" Max: "+ maxLum));
         int pixX = (int) displayMetrics.xdpi;
         int pixY = (int) displayMetrics.ydpi;
-        hardDisPixelPerInch.setText(String.valueOf("X: "+ pixX +" Y: "+ pixY));
+        binding.hardDisPixelPerInch.setText(String.valueOf("X: "+ pixX +" Y: "+ pixY));
 
         // Memory
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -220,14 +187,14 @@ public class HardwareActivity extends AppCompatActivity implements GLSurfaceView
         long uSto = tSto - aSto;
         float aStoInPer = ((float) aSto / tSto) * 100;
 
-        setHeadDetails.ofHardMem(hardMemFtIc, hardMemFtName);
+        setHeadDetails.ofHardMem(binding.hardMemFtIc, binding.hardMemFtName);
 
-        hardRamSize.setText(formatSize(tRam));
-        hardRamOccupied.setText(formatSize(uRam));
-        hardRamAvailable.setText(formatSize(aRam) + " - " + String.format(Locale.US, "%.2f", aRamInPer) + "%");
-        hardStoSize.setText(formatSize(tSto));
-        hardStoOccupied.setText(formatSize(uSto));
-        hardStoAvailable.setText(formatSize(aSto) + " - " + String.format(Locale.US, "%.2f", aStoInPer) + "%");
+        binding.hardRamSize.setText(formatSize(tRam));
+        binding.hardRamOccupied.setText(formatSize(uRam));
+        binding.hardRamAvailable.setText(formatSize(aRam) + " - " + String.format(Locale.US, "%.2f", aRamInPer) + "%");
+        binding.hardStoSize.setText(formatSize(tSto));
+        binding.hardStoOccupied.setText(formatSize(uSto));
+        binding.hardStoAvailable.setText(formatSize(aSto) + " - " + String.format(Locale.US, "%.2f", aStoInPer) + "%");
 
     }
 
@@ -329,9 +296,9 @@ public class HardwareActivity extends AppCompatActivity implements GLSurfaceView
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        hardSocGpuVendor.setText(gl.glGetString(GL10.GL_VENDOR));
-        hardSocGpuRenderer.setText(gl.glGetString(GL10.GL_RENDERER));
-        hardSocGpuVersion.setText(gl.glGetString(GL10.GL_VERSION));
+        binding.hardSocGpuVendor.setText(gl.glGetString(GL10.GL_VENDOR));
+        binding.hardSocGpuRenderer.setText(gl.glGetString(GL10.GL_RENDERER));
+        binding.hardSocGpuVersion.setText(gl.glGetString(GL10.GL_VERSION));
         String ext = gl.glGetString(GL10.GL_EXTENSIONS);
         if (ext != null) {
             String[] stringsArr = ext.split(" ");

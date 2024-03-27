@@ -1,10 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/senListView"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".sensors.SensorActivity">
+    android:layout_height="match_parent">
 
-</ListView>
+    <androidx.cardview.widget.CardView
+        android:layout_margin="15dp"
+        style="@style/Widget.Material3.CardView.Elevated"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:id="@+id/senFtSenCount"
+                android:layout_marginHorizontal="30dp"
+                android:layout_gravity="center|start"
+                android:gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textSize="15sp"
+                    android:text="Sensors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="Sensors Available"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/divider"/>
+
+    <ListView
+        android:id="@+id/senListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".sensors.SensorActivity">
+
+    </ListView>
+
+</LinearLayout>
