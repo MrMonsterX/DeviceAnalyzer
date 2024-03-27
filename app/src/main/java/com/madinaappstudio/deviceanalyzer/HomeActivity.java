@@ -9,6 +9,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.madinaappstudio.deviceanalyzer.apps.AppActivity;
 import com.madinaappstudio.deviceanalyzer.databinding.ActivityHomeBinding;
 import com.madinaappstudio.deviceanalyzer.networks.NetworkActivity;
 import com.madinaappstudio.deviceanalyzer.sensors.SensorActivity;
@@ -75,6 +76,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeActivity.this, ConnectivityActivity.class));
+            }
+        });
+
+        binding.mBtnApps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, AppActivity.class));
             }
         });
 
